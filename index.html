@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuralMind Connect | Healthcare Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c5aa0;
+            --secondary: #4a90e2;
+            --light: #f5f7fa;
+            --dark: #333;
+            --gray: #777;
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Login Page Styles */
+        #login-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        /* Main App Styles (Hidden Initially) */
+        #main-app {
+            display: none;
+        }
+        
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin: 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 10px 0;
+        }
+        
+        section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        .muted {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: var(--primary);
+            border: 1px solid #eaeaea;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+            border: 1px solid #eaeaea;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            border-color: var(--secondary);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #eaeaea;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+
+        /* Doctor List */
+        .doctor-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .doctor-card {
+            padding: 15px;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .doctor-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Medicine List */
+        .medicine-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .medicine-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .medicine-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #eaeaea;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            height: 300px;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background-color: #f0f0f0;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .chat-input input {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        /* Wellness Exercises */
+        .exercise-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--light);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 4s ease-in-out;
+        }
+
+        .breathing-circle.inhale {
+            transform: scale(1.5);
+            background-color: #e6f7ff;
+        }
+
+        .exercise-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            text-align: center;
+            border-left: 4px solid var(--primary);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Emergency Banner */
+        .emergency-banner {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .emergency-title {
+            color: #dc2626;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        /* Video Call Styles */
+        .video-call-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background-color: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .video-call-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .video-control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .video-control-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .video-control-btn.end-call {
+            background-color: var(--danger);
+        }
+
+        .video-control-btn.end-call:hover {
+            background-color: #c82333;
+        }
+
+        .call-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .call-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        /* Feedback Styles */
+        .feedback-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .feedback-item {
+            padding: 15px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .feedback-rating {
+            color: #ffc107;
+        }
+
+        .feedback-date {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .feedback-content {
+            margin-bottom: 8px;
+        }
+
+        .feedback-response {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .star {
+            font-size: 1.5rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star.active {
+            color: #ffc107;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .video-call-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page">
+        <div class="login-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h1>RuralMind Connect</h1>
+            <p class="tagline">Your trusted partner in rural healthcare</p>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            
+            <p class="muted" style="margin-top: 15px;">
+                Don't have an account? 
+                <a href="#" onclick="showSignup()" style="color: var(--primary);">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Application (Hidden Initially) -->
+    <div id="main-app" class="container">
+        <!-- Header -->
+        <header>
+            <h1>RuralMind Connect</h1>
+            <p class="muted">Your trusted partner in rural healthcare</p>
+            
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Doctors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Patients</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Emergency Banner -->
+        <section class="emergency-banner">
+            <h3 class="emergency-title">Emergency Services</h3>
+            <p class="muted">Need immediate medical attention? Our emergency team is available 24/7.</p>
+            <div class="action-buttons" style="justify-content: center;">
+                <button class="btn btn-danger" onclick="callEmergency()">
+                    <i class="fas fa-phone"></i> Call Emergency: 108
+                </button>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features">
+            <h2>Our Services</h2>
+            <div class="features-grid">
+                <div class="feature-card" onclick="openDoctorBooking()">
+                    <div class="feature-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h3 class="feature-title">Find Doctor</h3>
+                    <p class="muted">Book appointments with specialists</p>
+                </div>
+                
+                <div class="feature-card" onclick="openMedicineOrder()">
+                    <div class="feature-icon">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <h3 class="feature-title">Order Medicine</h3>
+                    <p class="muted">Get medicines delivered to your doorstep</p>
+                </div>
+                
+                <div class="feature-card" onclick="openHealthLibrary()">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-medical"></i>
+                    </div>
+                    <h3 class="feature-title">Health Library</h3>
+                    <p class="muted">Access health articles and guides</p>
+                </div>
+                
+                <div class="feature-card" onclick="openCommunityChat()">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="feature-title">Community Chat</h3>
+                    <p class="muted">Connect with healthcare providers</p>
+                </div>
+                
+                <div class="feature-card" onclick="openMentalWellness()">
+                    <div class="feature-icon">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <h3 class="feature-title">Mental Wellness</h3>
+                    <p class="muted">Therapy and mental health resources</p>
+                </div>
+                
+                <div class="feature-card" onclick="openNightCare()">
+                    <div class="feature-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <h3 class="feature-title">NightCare</h3>
+                    <p class="muted">24/7 emergency support</p>
+                </div>
+
+                <div class="feature-card" onclick="openVideoConsultation()">
+                    <div class="feature-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3 class="feature-title">Video Consultation</h3>
+                    <p class="muted">Connect with doctors via video call</p>
+                </div>
+
+                <div class="feature-card" onclick="openFeedback()">
+                    <div class="feature-icon">
+                        <i class="fas fa-comment-medical"></i>
+                    </div>
+                    <h3 class="feature-title">Feedback</h3>
+                    <p class="muted">Share your experience with us</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Section -->
+        <section>
+            <h2>Your Account</h2>
+            <p>Signed in as <strong id="account-email"></strong></p>
+            <div class="action-buttons">
+                <button id="logout-btn" class="btn btn-secondary">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal for Doctor Booking -->
+    <div class="modal" id="doctor-booking-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Book an Appointment</h3>
+                <button class="close-modal" onclick="closeModal('doctor-booking-modal')">&times;</button>
+            </div>
+            <div id="doctor-booking-content">
+                <div class="form-group">
+                    <label for="specialty">Specialty</label>
+                    <select id="specialty">
+                        <option value="general">General Physician</option>
+                        <option value="pediatrics">Pediatrics</option>
+                        <option value="cardiology">Cardiology</option>
+                        <option value="dermatology">Dermatology</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="appointment-date">Date</label>
+                    <input type="date" id="appointment-date">
+                </div>
+                
+                <div class="form-group">
+                    <label>Available Doctors</label>
+                    <div class="doctor-list">
+                        <div class="doctor-card">
+                            <div class="doctor-name">Dr. Aren Sharma</div>
+                            <div class="muted">General Physician • 15 years experience</div>
+                            <div class="action-buttons">
+                                <button class="btn btn-small" onclick="selectDoctor('Dr. Aren Sharma')">Select</button>
+                                <button class="btn btn-small btn-secondary" onclick="startVideoCall('Dr. Aren Sharma')">
+                                    <i class="fas fa-video"></i> Video Call
+                                </button>
+                                <button class="btn btn-small btn-secondary" onclick="startAudioCall('Dr. Aren Sharma')">
+                                    <i class="fas fa-phone"></i> Audio Call
+                                </button>
+                            </div>
+                        </div>
+                        <div class="doctor-card">
+                            <div class="doctor-name">Dr. Priya Mehta</div>
+                            <div class="muted">Pediatrician • 10 years experience</div>
+                            <div class="action-buttons">
+                                <button class="btn btn-small" onclick="selectDoctor('Dr. Priya Mehta')">Select</button>
+                                <button class="btn btn-small btn-secondary" onclick="startVideoCall('Dr. Priya Mehta')">
+                                    <i class="fas fa-video"></i> Video Call
+                                </button>
+                                <button class="btn btn-small btn-secondary" onclick="startAudioCall('Dr. Priya Mehta')">
+                                    <i class="fas fa-phone"></i> Audio Call
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn" onclick="confirmAppointment()" style="width: 100%;">
+                    <i class="fas fa-calendar-check"></i> Book Appointment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Medicine Order -->
+    <div class="modal" id="medicine-order-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Order Medicines</h3>
+                <button class="close-modal" onclick="closeModal('medicine-order-modal')">&times;</button>
+            </div>
+            <div id="medicine-order-content">
+                <div class="form-group">
+                    <input type="text" id="medicine-search" placeholder="Search for medicines...">
+                </div>
+                
+                <div class="medicine-list">
+                    <div class="medicine-item">
+                        <div>
+                            <strong>Paracetamol 500mg</strong>
+                            <div class="muted">Pain & Fever Relief • ₹25</div>
+                        </div>
+                        <div class="medicine-actions">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="decreaseQuantity('paracetamol')">-</button>
+                                <span class="quantity" id="paracetamol-quantity">0</span>
+                                <button class="quantity-btn" onclick="increaseQuantity('paracetamol')">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="medicine-item">
+                        <div>
+                            <strong>Amoxicillin 250mg</strong>
+                            <div class="muted">Antibiotic • ₹120</div>
+                        </div>
+                        <div class="medicine-actions">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="decreaseQuantity('amoxicillin')">-</button>
+                                <span class="quantity" id="amoxicillin-quantity">0</span>
+                                <button class="quantity-btn" onclick="increaseQuantity('amoxicillin')">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="medicine-item">
+                        <div>
+                            <strong>Cetirizine 10mg</strong>
+                            <div class="muted">Allergy Relief • ₹45</div>
+                        </div>
+                        <div class="medicine-actions">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="decreaseQuantity('cetirizine')">-</button>
+                                <span class="quantity" id="cetirizine-quantity">0</span>
+                                <button class="quantity-btn" onclick="increaseQuantity('cetirizine')">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn" onclick="placeOrder()" style="width: 100%;">
+                    <i class="fas fa-shopping-bag"></i> Place Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Health Library -->
+    <div class="modal" id="health-library-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Health Library</h3>
+                <button class="close-modal" onclick="closeModal('health-library-modal')">&times;</button>
+            </div>
+            <div id="health-library-content">
+                <div class="form-group">
+                    <input type="text" placeholder="Search health topics...">
+                </div>
+                
+                <h3>Popular Articles</h3>
+                <div class="doctor-list">
+                    <div class="doctor-card">
+                        <div class="doctor-name">Understanding Common Cold Symptoms</div>
+                        <div class="muted">Learn to identify and manage common cold symptoms effectively.</div>
+                        <button class="btn btn-small" style="margin-top: 8px;">Read</button>
+                    </div>
+                    <div class="doctor-card">
+                        <div class="doctor-name">Healthy Eating on a Budget</div>
+                        <div class="muted">Nutrition tips that won't break the bank.</div>
+                        <button class="btn btn-small" style="margin-top: 8px;">Read</button>
+                    </div>
+                    <div class="doctor-card">
+                        <div class="doctor-name">Stress Management Techniques</div>
+                        <div class="muted">Simple methods to reduce stress in daily life.</div>
+                        <button class="btn btn-small" style="margin-top: 8px;">Read</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Community Chat -->
+    <div class="modal" id="community-chat-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Community Chat</h3>
+                <button class="close-modal" onclick="closeModal('community-chat-modal')">&times;</button>
+            </div>
+            <div id="community-chat-content">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message received">
+                            Hello! Welcome to the Health Community. How can we help you today?
+                        </div>
+                        <div class="message received">
+                            Feel free to ask any health-related questions here.
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="chat-input" placeholder="Type your message...">
+                        <button class="btn" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Mental Wellness -->
+    <div class="modal" id="mental-wellness-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Mental Wellness</h3>
+                <button class="close-modal" onclick="closeModal('mental-wellness-modal')">&times;</button>
+            </div>
+            <div id="mental-wellness-content">
+                <h3>Guided Breathing Exercise</h3>
+                <p class="muted">Follow the breathing pattern: Inhale for 4 seconds, hold for 7 seconds, exhale for 8 seconds.</p>
+                
+                <div class="exercise-container">
+                    <div class="breathing-circle" id="breathing-circle">
+                        Breathe In
+                    </div>
+                    
+                    <div class="exercise-controls">
+                        <button class="btn" id="start-breathing" onclick="startBreathingExercise()">
+                            <i class="fas fa-play"></i> Start
+                        </button>
+                        <button class="btn btn-secondary" onclick="stopBreathingExercise()">
+                            <i class="fas fa-stop"></i> Stop
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="showTherapists()">
+                        <i class="fas fa-user-md"></i> Find Therapists
+                    </button>
+                    <button class="btn btn-secondary" onclick="showCrisisResources()">
+                        <i class="fas fa-life-ring"></i> Crisis Resources
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Night Care -->
+    <div class="modal" id="night-care-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">NightCare Services</h3>
+                <button class="close-modal" onclick="closeModal('night-care-modal')">&times;</button>
+            </div>
+            <div id="night-care-content">
+                <h3>24/7 Emergency & Urgent Care</h3>
+                <p class="muted">Our NightCare services ensure you have access to medical support even during nighttime hours.</p>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-danger" onclick="callEmergency()">
+                        <i class="fas fa-phone"></i> Emergency Hotline
+                    </button>
+                    <button class="btn" onclick="findUrgentCare()">
+                        <i class="fas fa-map-marker-alt"></i> Find Urgent Care
+                    </button>
+                </div>
+                
+                <div class="doctor-card" style="margin-top: 15px;">
+                    <div class="doctor-name">Telemedicine Consultations</div>
+                    <div class="muted">Connect with a doctor online for urgent medical advice</div>
+                    <button class="btn btn-small" onclick="startTelemedicine()" style="margin-top: 8px;">
+                        <i class="fas fa-video"></i> Start Consultation
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Video Consultation -->
+    <div class="modal" id="video-consultation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Video Consultation</h3>
+                <button class="close-modal" onclick="closeModal('video-consultation-modal')">&times;</button>
+            </div>
+            <div id="video-consultation-content">
+                <div class="form-group">
+                    <label for="consultation-doctor">Select Doctor</label>
+                    <select id="consultation-doctor">
+                        <option value="dr-aren">Dr. Aren Sharma (General Physician)</option>
+                        <option value="dr-priya">Dr. Priya Mehta (Pediatrician)</option>
+                        <option value="dr-raj">Dr. Raj Patel (Cardiologist)</option>
+                    </select>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn" onclick="startVideoCall()">
+                        <i class="fas fa-video"></i> Start Video Call
+                    </button>
+                    <button class="btn btn-secondary" onclick="startAudioCall()">
+                        <i class="fas fa-phone"></i> Start Audio Call
+                    </button>
+                </div>
+                
+                <div class="doctor-card" style="margin-top: 15px;">
+                    <div class="doctor-name">Upcoming Appointments</div>
+                    <div class="muted">You have an appointment with Dr. Priya Mehta tomorrow at 10:00 AM</div>
+                    <button class="btn btn-small" onclick="joinScheduledCall()" style="margin-top: 8px;">
+                        <i class="fas fa-video"></i> Join Scheduled Call
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Video/Audio Call -->
+    <div class="modal" id="call-modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="call-title">Video Call</h3>
+                <button class="close-modal" onclick="endCall()">&times;</button>
+            </div>
+            <div id="call-content">
+                <div class="video-call-container">
+                    <div class="call-info" id="call-info">Calling Dr. Aren Sharma...</div>
+                    <div class="call-status" id="call-status">00:30</div>
+                    <video id="local-video" autoplay muted></video>
+                    <video id="remote-video" autoplay></video>
+                    
+                    <div class="video-controls">
+                        <button class="video-control-btn" id="mute-audio" onclick="toggleAudio()">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="video-control-btn" id="mute-video" onclick="toggleVideo()">
+                            <i class="fas fa-video"></i>
+                        </button>
+                        <button class="video-control-btn end-call" onclick="endCall()">
+                            <i class="fas fa-phone-slash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="openChatDuringCall()">
+                        <i class="fas fa-comment"></i> Chat
+                    </button>
+                    <button class="btn btn-secondary" onclick="shareScreen()">
+                        <i class="fas fa-desktop"></i> Share Screen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Feedback -->
+    <div class="modal" id="feedback-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Share Your Feedback</h3>
+                <button class="close-modal" onclick="closeModal('feedback-modal')">&times;</button>
+            </div>
+            <div id="feedback-content">
+                <div class="form-group">
+                    <label for="feedback-type">Feedback Type</label>
+                    <select id="feedback-type">
+                        <option value="general">General Feedback</option>
+                        <option value="doctor">Doctor Consultation</option>
+                        <option value="medicine">Medicine Delivery</option>
+                        <option value="app">App Experience</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Rating</label>
+                    <div class="star-rating" id="star-rating">
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="feedback-message">Your Feedback</label>
+                    <textarea id="feedback-message" rows="4" placeholder="Tell us about your experience..."></textarea>
+                </div>
+                
+                <button class="btn" onclick="submitFeedback()" style="width: 100%;">
+                    <i class="fas fa-paper-plane"></i> Submit Feedback
+                </button>
+                
+                <div class="feedback-container" id="previous-feedback" style="margin-top: 20px; display: none;">
+                    <h3>Your Previous Feedback</h3>
+                    <div id="feedback-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Signup -->
+    <div class="modal" id="signup-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create Account</h3>
+                <button class="close-modal" onclick="closeModal('signup-modal')">&times;</button>
+            </div>
+            <div id="signup-content">
+                <div class="form-group">
+                    <label for="full-name">Full Name</label>
+                    <input type="text" id="full-name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password">
+                </div>
+                
+                <button class="btn" onclick="signup()" style="width: 100%;">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== AUTHENTICATION SYSTEM ====================
+        function loadUsers() {
+            try {
+                const raw = localStorage.getItem('rmc_users');
+                return raw ? JSON.parse(raw) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('rmc_users', JSON.stringify(users));
+        }
+
+        function getSession() {
+            try {
+                const raw = localStorage.getItem('rmc_session');
+                return raw ? JSON.parse(raw) : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function setSession(email) {
+            localStorage.setItem('rmc_session', JSON.stringify({ email }));
+        }
+
+        function clearSession() {
+            localStorage.removeItem('rmc_session');
+        }
+
+        function updateAuthUI() {
+            const session = getSession();
+            const loginPage = document.getElementById('login-page');
+            const mainApp = document.getElementById('main-app');
+            const accountEmail = document.getElementById('account-email');
+
+            if (session && session.email) {
+                loginPage.style.display = 'none';
+                mainApp.style.display = 'block';
+                accountEmail.textContent = session.email;
+            } else {
+                loginPage.style.display = 'flex';
+                mainApp.style.display = 'none';
+            }
+        }
+
+        // ==================== MODAL MANAGEMENT ====================
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside the content
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // ==================== DOCTOR BOOKING ====================
+        function openDoctorBooking() {
+            openModal('doctor-booking-modal');
+        }
+
+        function selectDoctor(doctorName) {
+            alert(`Selected ${doctorName}. Please choose a date and time.`);
+        }
+
+        function confirmAppointment() {
+            const date = document.getElementById('appointment-date').value;
+            if (!date) {
+                alert('Please select a date for your appointment.');
+                return;
+            }
+            alert(`Appointment confirmed!\n\nYou will receive a confirmation message shortly.`);
+            closeModal('doctor-booking-modal');
+        }
+
+        // ==================== MEDICINE ORDER ====================
+        function openMedicineOrder() {
+            openModal('medicine-order-modal');
+        }
+
+        function increaseQuantity(medicineId) {
+            const quantityElement = document.getElementById(`${medicineId}-quantity`);
+            let quantity = parseInt(quantityElement.textContent);
+            quantityElement.textContent = quantity + 1;
+        }
+
+        function decreaseQuantity(medicineId) {
+            const quantityElement = document.getElementById(`${medicineId}-quantity`);
+            let quantity = parseInt(quantityElement.textContent);
+            if (quantity > 0) {
+                quantityElement.textContent = quantity - 1;
+            }
+        }
+
+        function placeOrder() {
+            let hasItems = false;
+            const medicines = ['paracetamol', 'amoxicillin', 'cetirizine'];
+            
+            for (const medicine of medicines) {
+                const quantity = parseInt(document.getElementById(`${medicine}-quantity`).textContent);
+                if (quantity > 0) {
+                    hasItems = true;
+                    break;
+                }
+            }
+            
+            if (!hasItems) {
+                alert('Please add at least one medicine to your order.');
+                return;
+            }
+            
+            alert(`Order placed successfully!\n\nMedicines will be delivered within 24 hours.`);
+            closeModal('medicine-order-modal');
+            
+            // Reset quantities
+            medicines.forEach(medicine => {
+                document.getElementById(`${medicine}-quantity`).textContent = '0';
+            });
+        }
+
+        // ==================== HEALTH LIBRARY ====================
+        function openHealthLibrary() {
+            openModal('health-library-modal');
+        }
+
+        // ==================== COMMUNITY CHAT ====================
+        function openCommunityChat() {
+            openModal('community-chat-modal');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            const chatMessages = document.getElementById('chat-messages');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message sent';
+            messageElement.textContent = message;
+            
+            chatMessages.appendChild(messageElement);
+            input.value = '';
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Simulate a response after a short delay
+            setTimeout(() => {
+                const responses = [
+                    "Thank you for your question. How can we assist you?",
+                    "That's a good question. Let me find more information for you.",
+                    "I understand your concern. Many people experience similar issues.",
+                    "Have you consulted with a healthcare provider about this?"
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                
+                const responseElement = document.createElement('div');
+                responseElement.className = 'message received';
+                responseElement.textContent = randomResponse;
+                
+                chatMessages.appendChild(responseElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+
+        // ==================== MENTAL WELLNESS ====================
+        function openMentalWellness() {
+            openModal('mental-wellness-modal');
+        }
+
+        let breathingInterval;
+        let isBreathing = false;
+
+        function startBreathingExercise() {
+            if (isBreathing) return;
+            
+            isBreathing = true;
+            const circle = document.getElementById('breathing-circle');
+            const startButton = document.getElementById('start-breathing');
+            
+            startButton.disabled = true;
+            let phase = 'inhale';
+            let count = 0;
+            
+            breathingInterval = setInterval(() => {
+                if (phase === 'inhale') {
+                    circle.textContent = 'Breathe In';
+                    circle.classList.add('inhale');
+                    circle.classList.remove('exhale');
+                    count++;
+                    
+                    if (count >= 4) {
+                        phase = 'hold';
+                        count = 0;
+                        circle.textContent = 'Hold';
+                    }
+                } else if (phase === 'hold') {
+                    count++;
+                    
+                    if (count >= 7) {
+                        phase = 'exhale';
+                        count = 0;
+                        circle.textContent = 'Breathe Out';
+                        circle.classList.remove('inhale');
+                        circle.classList.add('exhale');
+                    }
+                } else if (phase === 'exhale') {
+                    count++;
+                    
+                    if (count >= 8) {
+                        phase = 'inhale';
+                        count = 0;
+                        circle.textContent = 'Breathe In';
+                        circle.classList.remove('exhale');
+                        circle.classList.add('inhale');
+                    }
+                }
+            }, 1000);
+        }
+
+        function stopBreathingExercise() {
+            clearInterval(breathingInterval);
+            isBreathing = false;
+            
+            const circle = document.getElementById('breathing-circle');
+            const startButton = document.getElementById('start-breathing');
+            
+            circle.textContent = 'Breathe In';
+            circle.classList.remove('inhale', 'exhale');
+            startButton.disabled = false;
+        }
+
+        function showTherapists() {
+            alert('Showing available therapists...');
+        }
+
+        function showCrisisResources() {
+            alert('Displaying crisis resources...');
+        }
+
+        // ==================== NIGHT CARE ====================
+        function openNightCare() {
+            openModal('night-care-modal');
+        }
+
+        function findUrgentCare() {
+            alert('Searching for nearby urgent care facilities...');
+        }
+
+        function startTelemedicine() {
+            alert('Connecting you with an available doctor...');
+        }
+
+        // ==================== VIDEO/AUDIO CALL FEATURES ====================
+        function openVideoConsultation() {
+            openModal('video-consultation-modal');
+        }
+
+        let callInterval;
+        let callSeconds = 0;
+        let isVideoCall = true;
+        let isAudioMuted = false;
+        let isVideoMuted = false;
+
+        function startVideoCall(doctorName) {
+            isVideoCall = true;
+            const doctor = doctorName || document.getElementById('consultation-doctor').options[document.getElementById('consultation-doctor').selectedIndex].text;
+            
+            document.getElementById('call-title').textContent = 'Video Call - ' + doctor;
+            document.getElementById('call-info').textContent = 'Calling ' + doctor + '...';
+            
+            openModal('call-modal');
+            
+            // Simulate call connection
+            setTimeout(() => {
+                document.getElementById('call-info').textContent = 'Connected to ' + doctor;
+                startCallTimer();
+                
+                // In a real app, we would initialize WebRTC here
+                // For this demo, we'll just show a placeholder
+                document.getElementById('local-video').style.display = 'block';
+                document.getElementById('remote-video').style.display = 'block';
+            }, 2000);
+        }
+
+        function startAudioCall(doctorName) {
+            isVideoCall = false;
+            const doctor = doctorName || document.getElementById('consultation-doctor').options[document.getElementById('consultation-doctor').selectedIndex].text;
+            
+            document.getElementById('call-title').textContent = 'Audio Call - ' + doctor;
+            document.getElementById('call-info').textContent = 'Calling ' + doctor + '...';
+            
+            openModal('call-modal');
+            
+            // Hide video elements for audio call
+            document.getElementById('local-video').style.display = 'none';
+            document.getElementById('remote-video').style.display = 'none';
+            
+            // Simulate call connection
+            setTimeout(() => {
+                document.getElementById('call-info').textContent = 'Connected to ' + doctor;
+                startCallTimer();
+            }, 2000);
+        }
+
+        function startCallTimer() {
+            callSeconds = 0;
+            updateCallTimer();
+            
+            callInterval = setInterval(() => {
+                callSeconds++;
+                updateCallTimer();
+            }, 1000);
+        }
+
+        function updateCallTimer() {
+            const minutes = Math.floor(callSeconds / 60);
+            const seconds = callSeconds % 60;
+            document.getElementById('call-status').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function toggleAudio() {
+            isAudioMuted = !isAudioMuted;
+            const button = document.getElementById('mute-audio');
+            
+            if (isAudioMuted) {
+                button.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                button.style.backgroundColor = 'var(--danger)';
+            } else {
+                button.innerHTML = '<i class="fas fa-microphone"></i>';
+                button.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            }
+        }
+
+        function toggleVideo() {
+            if (!isVideoCall) return;
+            
+            isVideoMuted = !isVideoMuted;
+            const button = document.getElementById('mute-video');
+            
+            if (isVideoMuted) {
+                button.innerHTML = '<i class="fas fa-video-slash"></i>';
+                button.style.backgroundColor = 'var(--danger)';
+                document.getElementById('local-video').style.display = 'none';
+            } else {
+                button.innerHTML = '<i class="fas fa-video"></i>';
+                button.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                document.getElementById('local-video').style.display = 'block';
+            }
+        }
+
+        function endCall() {
+            clearInterval(callInterval);
+            closeModal('call-modal');
+            
+            // Show feedback modal after call ends
+            setTimeout(() => {
+                openFeedback();
+            }, 1000);
+        }
+
+        function openChatDuringCall() {
+            alert('Opening chat window during call...');
+        }
+
+        function shareScreen() {
+            alert('Starting screen sharing...');
+        }
+
+        function joinScheduledCall() {
+            alert('Joining your scheduled call with Dr. Priya Mehta...');
+            startVideoCall('Dr. Priya Mehta');
+        }
+
+        // ==================== FEEDBACK SYSTEM ====================
+        function openFeedback() {
+            openModal('feedback-modal');
+            loadPreviousFeedback();
+            initializeStarRating();
+        }
+
+        function initializeStarRating() {
+            const stars = document.querySelectorAll('.star');
+            let currentRating = 0;
+            
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    currentRating = parseInt(this.getAttribute('data-rating'));
+                    
+                    stars.forEach(s => {
+                        if (parseInt(s.getAttribute('data-rating')) <= currentRating) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        }
+
+        function submitFeedback() {
+            const type = document.getElementById('feedback-type').value;
+            const message = document.getElementById('feedback-message').value;
+            
+            // Get rating from active stars
+            const activeStars = document.querySelectorAll('.star.active');
+            const rating = activeStars.length;
+            
+            if (rating === 0) {
+                alert('Please provide a rating.');
+                return;
+            }
+            
+            if (!message.trim()) {
+                alert('Please provide feedback message.');
+                return;
+            }
+            
+            // Save feedback to localStorage
+            const feedback = {
+                type,
+                rating,
+                message,
+                date: new Date().toISOString()
+            };
+            
+            const session = getSession();
+            if (session && session.email) {
+                let userFeedback = JSON.parse(localStorage.getItem(`rmc_feedback_${session.email}`) || '[]');
+                userFeedback.push(feedback);
+                localStorage.setItem(`rmc_feedback_${session.email}`, JSON.stringify(userFeedback));
+            }
+            
+            alert('Thank you for your feedback!');
+            closeModal('feedback-modal');
+            
+            // Clear form
+            document.getElementById('feedback-message').value = '';
+            document.querySelectorAll('.star').forEach(star => {
+                star.classList.remove('active');
+            });
+        }
+
+        function loadPreviousFeedback() {
+            const session = getSession();
+            if (!session || !session.email) return;
+            
+            const userFeedback = JSON.parse(localStorage.getItem(`rmc_feedback_${session.email}`) || '[]');
+            
+            if (userFeedback.length > 0) {
+                document.getElementById('previous-feedback').style.display = 'block';
+                const feedbackList = document.getElementById('feedback-list');
+                feedbackList.innerHTML = '';
+                
+                userFeedback.forEach(feedback => {
+                    const feedbackItem = document.createElement('div');
+                    feedbackItem.className = 'feedback-item';
+                    
+                    const date = new Date(feedback.date).toLocaleDateString();
+                    
+                    let stars = '';
+                    for (let i = 1; i <= 5; i++) {
+                        stars += i <= feedback.rating ? '★' : '☆';
+                    }
+                    
+                    feedbackItem.innerHTML = `
+                        <div class="feedback-header">
+                            <div class="feedback-rating">${stars}</div>
+                            <div class="feedback-date">${date}</div>
+                        </div>
+                        <div class="feedback-content">${feedback.message}</div>
+                        <div class="muted">Type: ${feedback.type}</div>
+                    `;
+                    
+                    feedbackList.appendChild(feedbackItem);
+                });
+            }
+        }
+
+        // ==================== AUTHENTICATION ====================
+        function showSignup() {
+            openModal('signup-modal');
+        }
+
+        function signup() {
+            const name = document.getElementById('full-name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!name || !email || !password) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            
+            const users = loadUsers();
+            if (users[email]) {
+                alert('An account with this email already exists. Please login.');
+                return;
+            }
+            
+            users[email] = {
+                name,
+                password, // In a real app, this would be hashed
+                createdAt: new Date().toISOString()
+            };
+            saveUsers(users);
+            setSession(email);
+            
+            alert(`Account created successfully!\n\nWelcome to RuralMind Connect, ${name}!`);
+            closeModal('signup-modal');
+            updateAuthUI();
+            
+            // Clear form
+            document.getElementById('full-name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // ==================== EMERGENCY FUNCTION ====================
+        function callEmergency() {
+            if (confirm('Call emergency services at 108?')) {
+                alert('Connecting to emergency services...');
+            }
+        }
+
+        // ==================== EVENT LISTENERS ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize authentication UI
+            updateAuthUI();
+
+            // Login Form
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value.trim().toLowerCase();
+                const password = document.getElementById('login-password').value;
+
+                const users = loadUsers();
+                const found = users[email];
+                if (!found) {
+                    alert('No account found for this email. Please sign up.');
+                    return;
+                }
+                if (found.password !== password) {
+                    alert('Incorrect password.');
+                    return;
+                }
+                setSession(email);
+                alert('Logged in successfully.');
+                this.reset();
+                updateAuthUI();
+            });
+
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                clearSession();
+                updateAuthUI();
+            });
+
+            // Add Enter key support for chat
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && document.getElementById('chat-input')) {
+                    const chatInput = document.getElementById('chat-input');
+                    if (document.activeElement === chatInput) {
+                        sendMessage();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
